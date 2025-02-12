@@ -1,0 +1,3 @@
+- [x] local image -> cloud  
+- [ ] cloud image -> local
+- [ ] cloud image -> cloud
