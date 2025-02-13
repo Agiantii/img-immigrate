@@ -69,6 +69,15 @@ class OSSManager(CloudManager):
         self.bucket = oss2.Bucket(self.auth, self.endpoint, self.bucket_name, region=self.region)
     def get_bucket(self):
         return self.bucket
+    def get_url(self):
+        """
+        endpoint: https://oss-cn-hangzhou.aliyuncs.com 
+        bucket_name: agiantii-oss-local
+        res https://agiantii-oss-local.oss-cn-hangzhou.aliyuncs.com 
+        """
+        # 将 endpoint 中的 https:// 去掉 换成 http://{bucket_name}/{endpoint[8:]}
+        res = f"http://{self.bucket_name}.{self.endpoint[8:]}"
+        return res
     def generate_unique_bucket_name(self):
         timestamp = int(time.time())
         random_number = random.randint(0, 9999)

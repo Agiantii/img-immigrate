@@ -1,0 +1,7 @@
+{
+    "access_key_id": "your_access_key_id",
+    "access_key_secret": "your_access_key_secret",
+    "endpoint": "https://oss-cn-hangzhou.aliyuncs.com",
+    "region": "cn-hangzhou",
+    "bucket_name": "your_bucket_name"
+}
