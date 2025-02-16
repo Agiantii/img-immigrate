@@ -5,10 +5,10 @@ import os
 import time
 # custom option
 
-source_path = r"E:\temp\anote" # 源文件夹 也可以是文件
+source_path = r"E:\temp\new-anote\algorithm" # 源文件夹 也可以是文件
 target_path:str = "" # 表示就是当前目录可以不用填写
 url_include_reg = ["agiantii"]
-url_exclude_reg = ["ali","yuque"]
+url_exclude_reg = ["alipay","yuque"]
 exclude_folder = [".git"] # 排除的文件夹
 
 
@@ -47,6 +47,7 @@ def convert(source_path):
         # 且是 md 文件
         if not source_path.endswith(".md"):
             return
+        log(source_path)
         with open(source_path,"r",encoding="utf-8") as f:
             md_name = os.path.basename(source_path).split(".")[0]
             md_name = md_name.replace(" ","_")
@@ -57,17 +58,14 @@ def convert(source_path):
             for img_link in img_links:
                 if("http" not in img_link):
                     continue
-                filter:bool = False
                 # 是否在 include_img_url 里面
-                for i in url_include_reg:
-                    if i in img_link:
-                        filter = True
-                for i in url_exclude_reg:
-                    if i in img_link:
-                        filter = False
-                if not filter:
+                if(not any([i in img_link for i in url_include_reg])):
+                    continue
+                # 是否 在 exclude_img_url 里面
+                if(any([i in img_link for i in url_exclude_reg])):
                     continue
                 log(img_link)
+                # continue
                 # analyse
                 global img_count,img_size
                 try:
@@ -88,7 +86,7 @@ def convert(source_path):
                 f.write(new_content)
     else:
         for path in os.listdir(source_path):
-            if any([i.match(path) for i in exclude_folder]):
+            if any([i in path for i in exclude_folder]):
                 continue
             convert(os.path.join(source_path,path))
                              
