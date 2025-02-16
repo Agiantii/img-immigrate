@@ -5,7 +5,7 @@ import os
 import time
 # custom option
 
-source_path = r"E:\temp\new-anote\algorithm" # 源文件夹 也可以是文件
+source_path = r"E:\blog\ablog-v\docs" # 源文件夹 也可以是文件
 target_path:str = "" # 表示就是当前目录可以不用填写
 url_include_reg = ["agiantii"]
 url_exclude_reg = ["alipay","yuque"]
@@ -41,7 +41,7 @@ def retry(delay=1, times=3):
 @retry(delay=1,times=3)
 def img_get(url):
     return requests.get(url).content
-def convert(source_path):
+def cloud_to_local(source_path):
     # 如果是 文件
     if(os.path.isfile(source_path)):
         # 且是 md 文件
@@ -88,8 +88,8 @@ def convert(source_path):
         for path in os.listdir(source_path):
             if any([i in path for i in exclude_folder]):
                 continue
-            convert(os.path.join(source_path,path))
+            cloud_to_local(os.path.join(source_path,path))
                              
 if __name__ == "__main__":
-    convert(source_path)
-    print(img_count)
+    cloud_to_local(source_path)
+    print(f"图片数量: {img_count} 图片大小: {img_size/1024/1024}MB")

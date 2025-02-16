@@ -1,11 +1,9 @@
 from cloud import OSSManager,CloudManager
 import os
 import re
-import shutil
-source_directory = r"E:\temp\anote\algorithm" # 源文件夹 也可以是文件
-target_directory = r"E:\temp\new-anote\algorithm" # 目标文件夹
-config_path = r"E:\root\oss\oss-config.json" # 配置文件
 
+source_directory = r"E:\temp\anote\algorithm" # 源文件夹 也可以是文件
+config_path = r"E:\root\oss\oss-config.json" # 配置文件参考 ./oss-config.json
 
 # analysis 
 img_count = 0 # 图片数量
@@ -39,7 +37,8 @@ def copy_folder(old_path:str,new_path:str):
 def local_to_cloud(source_path:str,
                    cloudManager:CloudManager,
                    exclude_folder:list[str] = [".git"],
-                   cloud_prefix:str="test/"):
+                   cloud_prefix:str="test/",
+                   is_remove_local:bool = False):
     """
     @description  : 将本地文件上传到云
     ---------
@@ -49,6 +48,7 @@ def local_to_cloud(source_path:str,
     @param  : cloud_prefix:str : 云文件前缀
         - 注意 如果是 test 传输 则会 test-1.jpg
         - 如果是 test/ 传输 则会 test/1.jpg
+    @param  : is_remove_local:bool : 是否删除 上传后的 本地文件
     """ 
     # 如果是 md文件
     if(os.path.isfile(source_path)):
@@ -73,7 +73,7 @@ def local_to_cloud(source_path:str,
                     img_url = cloudManager.get_url()+"/"+cloud_path
                     debug(f"上传成功: {img_url}")
                     new_content = new_content.replace(img_link,img_url)
-                    os.remove(img_path)
+                    if(is_remove_local):os.remove(img_path)
                 except Exception as e:
                     error(e)
             with open(source_path, "w", encoding="utf-8") as f:
@@ -99,10 +99,14 @@ def dirremove(target_directory:str):
             os.remove(target_path)
     # os.rmdir(target_directory)
 if __name__ == "__main__":
-    # 先清理  target_directory
-    if(os.path.exists(target_directory)):
-        dirremove(target_directory)
-    shutil.rmtree(target_directory,ignore_errors=True)
-    # 复制
-    shutil.copytree(source_directory,target_directory,dirs_exist_ok=True)
-    local_to_cloud(source_path=target_directory,cloudManager=OSSManager(config_path=config_path))
+    # # 先清理  target_directory
+    # if(os.path.exists(target_directory)):
+    #     dirremove(target_directory)
+    # shutil.rmtree(target_directory,ignore_errors=True)
+    # # 复制
+    # shutil.copytree(source_directory,target_directory,dirs_exist_ok=True)
+    local_to_cloud(source_path=source_directory,
+                   cloudManager=OSSManager(config_path=config_path)
+                   )
+    print(f"图片数量: {img_count}")
+    print(f"图片大小: {img_size/1024}KB")
