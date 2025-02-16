@@ -38,7 +38,7 @@ def retry(delay=1, times=3):
             return func(*args, **kwargs)
         return inner
     return wrapper
-
+@retry(delay=1,times=3)
 def img_get(url):
     return requests.get(url).content
 def convert(source_path):
