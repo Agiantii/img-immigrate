@@ -8,9 +8,15 @@
 - 从云端下载图片并上传到指定的 OSS
 - 支持排除特定文件夹
 - 支持调试模式和日志记录
+## 文件说明
+- cloud-to-local 从云端下载图片到本地,同时 修改markdown文件中的图片路径 为 ./assets/${filename}/unique_time_id
+- local-to-cloud 上传本地图片到云端,同时 修改markdown文件中的图片路径为 oss地址
+- cloud-to-cloud 
+- 注意
+    - **每个 文件实现起来大多都是一个函数 传如 source_path 会改变 source_path 可以先复制一下看看效果**
+    - 且 函数递归实现,可以直接传入 文件夹目录 或是 文件(.md)路径
 
 ## 使用说明
-
 ### 环境配置
 
 1. 确保已安装 Python 3.x。

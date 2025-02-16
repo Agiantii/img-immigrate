@@ -34,7 +34,12 @@ class CloudManager(ABC):
     @abstractmethod
     def delete_bucket(self):
         pass
-
+    @abstractmethod
+    def generate_unique_bucket_name(self):
+        pass
+    @abstractmethod
+    def get_url(self):
+        pass
 class OSSManager(CloudManager):
     def __init__(self, access_key_id=None, access_key_secret=None, endpoint=None, region=None, bucket_name=None, config_path=None):
         """
@@ -97,13 +102,17 @@ class OSSManager(CloudManager):
         except oss2.exceptions.OssError as e:
             logging.error(f"Failed to create bucket: {e}")
 
-    def upload_file(self, object_name, data):
+    def upload_file(self, object_name, data) -> dict:
         try:
             result = self.bucket.put_object(object_name, data)
             logging.info(f"File uploaded successfully, status code: {result.status}")
             return result
         except oss2.exceptions.OssError as e:
             logging.error(f"Failed to upload file: {e}")
+            return{
+                "status":e,
+                "url":""
+            }
 
     def download_file(self, object_name):
         try:

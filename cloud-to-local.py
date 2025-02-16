@@ -8,7 +8,7 @@ import time
 source_path = r"E:\temp\anote" # 源文件夹 也可以是文件
 target_path:str = "" # 表示就是当前目录可以不用填写
 url_include_reg = ["agiantii"]
-url_exclude_reg = ["ali"]
+url_exclude_reg = ["ali","yuque"]
 exclude_folder = [".git"] # 排除的文件夹
 
 
@@ -62,6 +62,9 @@ def convert(source_path):
                 for i in url_include_reg:
                     if i in img_link:
                         filter = True
+                for i in url_exclude_reg:
+                    if i in img_link:
+                        filter = False
                 if not filter:
                     continue
                 log(img_link)
