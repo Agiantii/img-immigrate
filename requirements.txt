@@ -8,6 +8,7 @@ cryptography==44.0.1
 idna==3.10
 jmespath==0.10.0
 oss2==2.19.1
+psutil==7.0.0
 pycparser==2.22
 pycryptodome==3.21.0
 requests==2.32.3
